@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
-
 const GenerateImages = () => {
   const [searchWord, setSearchWord] = useState('');
   const [GenerateImages, setGenerateImages] = useState('');
 
   useEffect(() => {
-
-    fetch(`https://robohash.org/${searchWord}`)
+    const abortController = new AbortController();
+    fetch(`https://robohash.org/${searchWord}`, {
+      signal: abortController.signal,
+    })
       .then((res) => setGenerateImages(res.url))
       .catch((err) => console.log(err));
-
+        return () => abortController.abort();
   }, [searchWord]);
 
   return (

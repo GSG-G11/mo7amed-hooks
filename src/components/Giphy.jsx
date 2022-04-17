@@ -3,20 +3,25 @@ import { useState, useEffect } from 'react';
 const Giphy = () => {
   const [searchWord, setSearchWord] = useState('');
   const [data, setData] = useState([]);
+      const abortController = new AbortController();
 
   useEffect(() => {
 
     if (searchWord.trim() === '') return;
 
     fetch(
-      `https://api.giphy.com/v1/gifs/search?q=${searchWord}&limit=5&api_key=GB2TIpB11wLmKBbNbYZ5b6F9HMYXs38a`
+      `https://api.giphy.com/v1/gifs/search?q=${searchWord}&limit=5&api_key=GB2TIpB11wLmKBbNbYZ5b6F9HMYXs38a`,
+      {
+        signal: abortController.signal,
+      },
     )
       .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-            setData(data.data.map((obj) => obj.images.original.url))
-        })
+      .then((data) => {
+        console.log(data);
+        setData(data.data.map((obj) => obj.images.original.url));
+      })
       .catch((err) => console.log(err));
+        return () => abortController.abort();
   }, [searchWord]);
 
   return (
