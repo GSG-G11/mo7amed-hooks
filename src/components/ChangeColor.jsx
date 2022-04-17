@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const ChangeColor = () => {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [backgroundColor, setBackgroundColor] = useState('#fff');
 
   useEffect(() => {
     document.addEventListener('mousemove', handleChangeColor);
@@ -15,9 +16,10 @@ const ChangeColor = () => {
     const screenWidth = window.innerWidth / 2;
 
     if (coords.x > screenWidth) {
-      document.body.style.backgroundColor = 'blue';
+      setBackgroundColor('blue')
     } else {
-      document.body.style.backgroundColor = 'red';
+      setBackgroundColor('red');
+
     }
 
     setCoords({ x: e.clientX, y: e.clientY });
@@ -25,7 +27,7 @@ const ChangeColor = () => {
 
   return (
     <>
-      <h1>
+      <h1 style={{ backgroundColor: backgroundColor  }}>
         I'm now on X: {coords.x}, and Y: {coords.y}
       </h1>
     </>
